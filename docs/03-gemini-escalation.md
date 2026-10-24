@@ -1,5 +1,7 @@
 # 03 — Gemini: explicit escalation, optional fallback and attribution
 
+**Actual execution (2026-10-24):** operator approved manual Gemini tests; key saved locally, model listing HTTP 200, both Flash inference trials HTTP 503. No successful Gemini inference or billing attribution claimed. See [phase results](09-gemini-stage-zh-TW.md).
+
 **Default mode: local-only.** Having a Google/Gemini subscription is NOT the same as being entitled to Gemini API calls inside Hermes. Hermes native Gemini provider uses an API key and API quota/billing.
 
 Official guide: https://hermes-agent.nousresearch.com/docs/guides/google-gemini

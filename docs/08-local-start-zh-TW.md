@@ -43,7 +43,7 @@ hermes chat --oneshot --reasoning none --max-turns 3 -q '請用繁體中文打�
 
 - 設定：`~/.hermes/config.yaml`；原始安裝設定備份：`~/.hermes/config.yaml.pre-local-poc`。
 - 本機工具只啟用 terminal / file。scratch cwd 是工作目錄設定，並非作業系統強制的檔案沙盒；請維持在無敏感資料的測試目錄使用。
-- Gemini 金鑰、雲端 fallback 未設定；外部登入採用、輔助標題生成、壓縮、內建記憶、遙測與背景 skill curator 已停用於這階段。
+- Gemini 金鑰已於第二階段存入本機；兩個 Flash 模型的推論皆回傳 Google HTTP 503，詳見 [Gemini 階段紀錄](09-gemini-stage-zh-TW.md)。預設仍是本機，雲端 fallback 關閉；外部登入採用、輔助標題生成、壓縮、內建記憶、遙測與背景 skill curator 維持停用。
 - 64K context 的短提示測試成功，不代表已測試填滿 64K 的長對話。末次觀察 swap 約 1.2 GiB，尚需持續觀察。
 - `hermes doctor` 發現 stable 版本的 npm 依賴漏洞，需追蹤上游 lockfile 修正；本次未修改供應商依賴。
 - 任何模型宣稱的檔案修改，都要在檔案系統另行核對；這次測試已出現誤報成功。

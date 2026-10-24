@@ -2,7 +2,7 @@
 
 > POC 001 — Hermes Agent + Ollama + optional Gemini on **Golden Gate** (Mac mini M6 base, Apple Silicon, 16 GB unified memory, 256 GB SSD).
 
-**Status (2026-10-24): LOCAL PHASE LIMITED PASS.** Hermes v0.22.5 + Ollama 0.40.10 + Qwen3.5 4B are installed on the inspected M6 / 16 GB Mac. Local chat and restart tests passed; exact-format file/correction tests failed, npm audit findings remain, and full 64K stress/Gemini/removal-reinstallation are pending. See the actual [execution log](docs/06-execution-log.md) and [local start guide (繁體中文)](docs/08-local-start-zh-TW.md). The operator accepted the local phase with its recorded limitations and authorized GitHub publication and the manual Gemini stage. Individual test failures remain recorded.
+**Status (2026-10-24): LOCAL PHASE LIMITED PASS.** Hermes v0.22.5 + Ollama 0.40.10 + Qwen3.5 4B are installed on the inspected M6 / 16 GB Mac. Local chat and restart tests passed; exact-format file/correction tests failed, npm audit findings remain, and full 64K stress/removal-reinstallation are pending. Gemini credentials and live model listing are configured; manual native inference tests on two Flash models returned HTTP 503 and successful cloud inference remains blocked. See the actual [execution log](docs/06-execution-log.md) and [local start guide (繁體中文)](docs/08-local-start-zh-TW.md). The operator accepted the local phase with its recorded limitations and authorized GitHub publication and the manual Gemini stage. Individual test failures remain recorded. See [Gemini phase results and usage (繁體中文)](docs/09-gemini-stage-zh-TW.md).
 
 ## Objectives
 

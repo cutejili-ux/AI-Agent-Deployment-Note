@@ -2,7 +2,7 @@
 
 **State: LOCAL PHASE LIMITED PASS — executed 2026-10-24, Australia/Brisbane.**
 
-Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Gemini, long-context stress, actual uninstall/reinstall, and upstream dependency remediation remain untested or unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
+Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Successful Gemini inference is blocked by Google HTTP 503; long-context stress, actual uninstall/reinstall, and upstream dependency remediation remain untested or unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
 
 ## Environment and provenance
 
@@ -22,7 +22,7 @@ Hermes + Ollama are installed and local chat works. File tools executed, but the
 | Model format / size | safetensors, nvfp4, MLX runner; approximately 4.0 GB shared weights |
 | Inference endpoint | http://127.0.0.1:11434/v1 |
 | Context | 65536 in Modelfile, Hermes config, and `ollama ps` |
-| Gemini / fallback | No Gemini key configured; fallback list empty; no cloud inference test |
+| Gemini / fallback | Phase 1: no key. Phase 2: local key mode 0600, live catalog HTTP 200, two Flash trials HTTP 503; fallback list remains empty |
 
 ## Results
 
@@ -36,12 +36,13 @@ Hermes + Ollama are installed and local chat works. File tools executed, but the
 | T06 | PASS | HERMES_LOCAL_OK in 6s; 17 + 25 → 42 in 3s; matching loopback `/v1/chat/completions` HTTP 200 |
 | T07, G2 | LIMITED / strict test FAIL | File created and read, independently verified; missing requested newline; correction attempt used an invalid path and claimed success despite failure |
 | T08 | PARTIAL | Explicit local route and corresponding Ollama requests observed; no Gemini key/fallback configured; no packet-level audit or Google dashboard check |
-| T09/T10, G3 | PREPARING | Manual Gemini stage approved by operator; secure key entry and cloud usage verification pending |
+| T09, G3 | BLOCKED | Native Gemini routing observed; 3.7 and 3.8 Flash inference returned HTTP 503; no successful reply or billing corroboration |
+| T10 | PARTIAL | Missing key correctly rejects execution, but CLI shows generic failure; backend logs identify missing credentials; original key restored |
 | T11, G4 | NOT STARTED | Optional fallback disabled |
 | T12 | PASS | Stopped/restarted only POC Ollama; Hermes returned RECOVERY_OK in 5s using the same local default |
 | T13 | PARTIAL | `hermes uninstall --dry-run` exit 0; no destructive uninstall performed |
 | T14, G5 | NOT STARTED | Actual removal/reinstallation not authorized/performed |
-| T15, G6 | REVIEW PASS | Sanitized documentation reviewed; operator authorized publication; use Git history for published revision |
+| T15, G6 | PASS for local evidence publication | Sanitized local-phase docs published in 9ba199fa804e5823560c402e49f0c06db39837ce; subsequent phase evidence follows in Git history |
 
 ## Installation commands and incidents
 
@@ -94,5 +95,41 @@ Ollama is left running as a foreground POC session process on loopback; it is no
 - Use local chat for the initial POC. Treat file edits as unverified until independently checked; exact-byte and path handling failed with this 4B model.
 - Observe sustained 64K context memory pressure before accepting G1 fully.
 - Review upstream dependency fixes before broader exposure or production use.
-- Operator approved the local phase and manual Gemini stage. Secure interactive key entry and observed cloud test are next. Keep fallback off.
+- Operator approved the local phase and manual Gemini stage. Key setup/catalog succeeded; successful Gemini inference needs a later explicit retest after vendor 503s clear. Keep fallback off.
 - Actual uninstall/reinstall remain separate, pending steps. Sanitized evidence publication is authorized.
+
+
+## Phase 2 — approved manual Gemini tests (2026-10-24)
+
+### Authorization and secret handling
+
+- Operator accepted the local phase and explicitly authorized GitHub publication plus the next stage. The measured local limitations were retained, not relabeled PASS.
+- Local-phase publication succeeded: commit `9ba199fa804e5823560c402e49f0c06db39837ce` on origin/main.
+- Operator entered the Google AI Studio key using a native macOS hidden-answer dialog. A helper captured it privately and atomically saved only the local `~/.hermes/.env` with mode 0600. No key was placed in chat, shell arguments, repository content, or public evidence.
+- Set the native `GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta`; the main model/default stayed custom Ollama.
+
+### Catalog and explicit cloud trials
+
+- 20:34:45 +10:00 / 10:34:45 UTC: authenticated native `GET /v1beta/models?pageSize=1000`, key supplied through an HTTP header, returned HTTP 200.
+- Intersected Google's live generateContent models with the installed Hermes selector list. Available entries included `gemini-3.7-flash` and `gemini-3.8-flash`; model IDs were observed, not guessed.
+- First explicit invocation requested `gemini-3.7-flash`, native Google base URL, harmless prompt `Answer with exactly GEMINI_OK. Do not use tools.`, max_turns 1 and run_budget 90. Logs confirmed `provider=gemini`, the native Google host and exact model. Google returned HTTP 503 UNAVAILABLE/high demand; Hermes' default internal recovery logic continued beyond the desired wall-clock budget. The outer harness timed out after 120s and the sole test gateway was deliberately stopped with `hermes gateway stop --yes` to terminate its active recovery. No successful response was observed.
+- To bound further POC retries, preserved the previous config locally as `config.yaml.pre-gemini-poc`, set `agent.api_max_retries: 1`, `agent.auto_recovery_cycles: 0`, and Gemini request/stale timeouts to 20/25 seconds. Main model/default and empty fallback list were retained. These caps remain in the POC profile.
+- 20:37:53 +10:00 / 10:37:53 UTC: made one explicit second-model trial with catalog-verified `gemini-3.8-flash`, same endpoint and synthetic prompt. This was an intentional manual switch, not automatic fallback. Command exited 1 after 30.37s; Google again returned HTTP 503 high demand. No GEMINI_OK reply. No additional model trials were made.
+- The second invocation did not alter config (verified by before/after SHA-256 equality; digest itself not published).
+- The session store recorded model `gemini-3.8-flash`, zero successful api_call_count/token counts, empty per-model usage and null billing fields. Logs establish attempted provider routing; these counters do NOT establish zero Google billing. Google dashboard usage/quota/cost verification remains pending.
+
+### Missing-key experiment (T10 PARTIAL)
+
+- Stopped the prior temporary gateway so credentials could not be inherited from that process.
+- Temporarily removed only Gemini/Google key entries from the local dotenv file and subprocess environment; made one explicit Gemini invocation; restored the original dotenv bytes atomically in a finally block and removed the private temporary backup. Restoration and mode 0600 were verified.
+- The command exited 1 in about 1s, before model inference, with no alternate-provider response. Backend log: `ProviderNotConfiguredError: Provider 'gemini' ... no API key was found`. CLI only showed a generic model-request failure, so the clear user-facing-error acceptance condition did not fully pass.
+
+### Post-cloud local recovery
+
+- Stopped the keyless-test gateway, then ran an ordinary Hermes one-shot without provider/model overrides.
+- Returned `LOCAL_STILL_OK`, exit 0, duration 7s, no tool calls. Session metadata recorded `model=qwen3.5-4b-64k`, `billing_provider=custom`, `billing_base_url=http://127.0.0.1:11434/v1`, one call, 4863 input tokens and 4 output tokens.
+- Verified local default/context settings retained, fallback list empty, Gemini key present locally and dotenv mode 0600. No Telegram/Discord integration, launchd gateway, automatic provider fallback or billing-plan changes were configured.
+
+### Phase 2 result
+
+**SETUP COMPLETE; SUCCESSFUL CLOUD INFERENCE BLOCKED BY HTTP 503.** Native provider setup and attempted routing are observed. Gemini response correctness, successful token/cost attribution and Google dashboard corroboration are not proven. Local operation remains available. Do not enable fallback or claim full G3 PASS on this evidence. Retest the explicit synthetic Gemini call after the vendor becomes available; do not schedule or retry indefinitely. Raw diagnostic/credential artifacts stay outside this public repository.
