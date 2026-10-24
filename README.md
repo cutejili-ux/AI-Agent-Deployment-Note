@@ -61,3 +61,19 @@ Never commit API keys, auth files, private sessions, logs, personal documents or
 - Ollama Qwen3.5: https://ollama.com/library/qwen3.5
 
 Installation interfaces and model catalogs evolve; recheck official docs and record the exact versions before executing.
+
+
+## Phase 4 — sandbox, web search and model tuning (STAGED, NOT DEPLOYED)
+
+Requested 2026-10-24. These are version-aware documents and operator-run scripts. They do NOT imply that Golden Gate settings, Ollama models or Docker were changed.
+
+- [繁中安全設計與部署步驟](docs/11-hardening-plan-zh-TW.md)
+- [繁中驗收／回復矩陣](docs/12-hardening-validation-zh-TW.md)
+- [Reversible Docker backend / search config](scripts/macos/harden.sh): --check / --apply / --rollback
+- [Optional local model trial](scripts/macos/model-trials.sh): --plan / --build-4b / --build-7b
+- [Workspace agent instructions](policy/AGENTS.md)
+- [4B temperature=0.2 Modelfile](config/Modelfile.qwen3.5-4b-t02)
+- [Experimental 7B temperature=0.2 Modelfile](config/Modelfile.qwen2.5-7b-experimental)
+- [Empty cloud/Search key placeholders](config/cloud-keys.env.example)
+
+Priority: keep Ollama on macOS for Apple GPU, send Hermes terminal/file/code operations to Docker with only ~/hermes_workspace mounted. Built-in web_search handles search; do not scrape Google Maps via curl/urllib. Qwen2.5 7B/14B catalog context is listed at 32K vs Hermes >=64K, so 7B is a *trial*, not an automatic default switch. Existing Gemini 503 and long-context instability remain unresolved.

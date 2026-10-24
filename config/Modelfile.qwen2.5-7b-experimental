@@ -1,0 +1,6 @@
+# Experimental ONLY. The Ollama catalog lists qwen2.5:7b at 32K context.
+# A 65536 override is outside that listing and may be unsupported or unstable.
+# Do not set as Hermes default until context/tool/memory acceptance tests pass.
+FROM qwen2.5:7b
+PARAMETER temperature 0.2
+PARAMETER num_ctx 65536

@@ -1,0 +1,5 @@
+# Safer baseline: same original 4B weights, reduced sampling temperature.
+# 65536 configured context still needs real memory/stability testing.
+FROM qwen3.5:4b
+PARAMETER temperature 0.2
+PARAMETER num_ctx 65536
