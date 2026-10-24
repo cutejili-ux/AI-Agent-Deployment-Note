@@ -77,7 +77,8 @@ case "$MODE" in
   hermes config set terminal.docker_persist_across_processes false
   hermes config set terminal.cwd /workspace
   hermes config set approvals.mode manual
-  hermes config set approvals.deny '["*curl*google.com/search*","*curl*google.com/maps*","*urllib*google.com*","*git push --force*"]'
+  # Preserve existing approvals.deny policies; avoid replacing an operator's blocklist.
+  # Docker network=none, not glob matching, controls terminal/container egress.
   hermes config set web.search_backend ddgs
   hermes config set web.extract_backend tavily
   hermes config check
