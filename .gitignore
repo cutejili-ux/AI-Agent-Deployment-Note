@@ -1,0 +1,26 @@
+# Secrets, credentials, sessions and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+*secrets*
+auth.json
+config.local.yaml
+
+# Raw execution evidence and personal data
+logs/
+*.log
+*.log.*
+*.sqlite
+*.sqlite3
+*.db
+sessions/
+evidence/private/
+evidence/raw/
+.poc-local/
+.DS_Store
+__pycache__/
+.venv/
+node_modules/
