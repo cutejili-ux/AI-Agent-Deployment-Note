@@ -2,7 +2,7 @@
 
 **State: LOCAL PHASE LIMITED PASS — executed 2026-10-24, Australia/Brisbane.**
 
-Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Successful Gemini inference is blocked by Google HTTP 503; long-context stress, actual uninstall/reinstall, and upstream dependency remediation remain untested or unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
+Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Hermes Gemini inference remains unresolved (503/timeouts despite a minimal native HTTP 200). Long-input testing stopped at memory-pressure warnings. Retained-data uninstall/reinstall has now passed; upstream dependency remediation remains unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
 
 ## Environment and provenance
 
@@ -31,17 +31,17 @@ Hermes + Ollama are installed and local chat works. File tools executed, but the
 | T00/T01, G0 | PASS | Hardware/OS/disk verified; Git and existing Xcode tools work |
 | T02 | PASS | CLI 0.40.10; loopback `/api/tags` HTTP 200; Apple M6 Metal detected |
 | T03 | PASS | Base/derived tags exist; derived Modelfile declares num_ctx 65536 |
-| T04, G1 | LIMITED PASS | Short prompt runs with actual 65536 context and 100% GPU; full-window stress and GUI memory-pressure observations not performed |
+| T04, G1 | BLOCKED for sustained long input | Context remains 65536; 8169-token input responds, but pressure level 2 triggered stop during the 32K target; 64K target not run |
 | T05 | LIMITED PASS | Installation, launcher, config check pass; doctor exits 1 due to npm dependency vulnerability findings |
 | T06 | PASS | HERMES_LOCAL_OK in 6s; 17 + 25 → 42 in 3s; matching loopback `/v1/chat/completions` HTTP 200 |
-| T07, G2 | LIMITED / strict test FAIL | File created and read, independently verified; missing requested newline; correction attempt used an invalid path and claimed success despite failure |
+| T07, G2 | LIMITED PASS | Initial strict-format/path correction failed; later constrained relative-filename create/read/edit/read passed independent byte checks |
 | T08 | PARTIAL | Explicit local route and corresponding Ollama requests observed; no Gemini key/fallback configured; no packet-level audit or Google dashboard check |
-| T09, G3 | BLOCKED | Native Gemini routing observed; 3.7 and 3.8 Flash inference returned HTTP 503; no successful reply or billing corroboration |
+| T09, G3 | BLOCKED for Hermes | Native route observed, but 503/timeouts persist; minimal direct native HTTP 200 proves some API execution, not Hermes compatibility or full billing attribution |
 | T10 | PARTIAL | Missing key correctly rejects execution, but CLI shows generic failure; backend logs identify missing credentials; original key restored |
 | T11, G4 | NOT STARTED | Optional fallback disabled |
 | T12 | PASS | Stopped/restarted only POC Ollama; Hermes returned RECOVERY_OK in 5s using the same local default |
-| T13 | PARTIAL | `hermes uninstall --dry-run` exit 0; no destructive uninstall performed |
-| T14, G5 | NOT STARTED | Actual removal/reinstallation not authorized/performed |
+| T13 | PASS, retained-data mode | Reviewed dry-run, verified private backup, actual default uninstall exit 0; code/wrapper removed, data retained |
+| T14, G5 | PASS, same-host retained-data reinstall | Same v0.22.5 commit reinstalled; config/credentials byte-identical, original 15 sessions preserved, local reply passes |
 | T15, G6 | PASS for local evidence publication | Sanitized local-phase docs published in 9ba199fa804e5823560c402e49f0c06db39837ce; subsequent phase evidence follows in Git history |
 
 ## Installation commands and incidents
@@ -84,7 +84,7 @@ Hermes + Ollama are installed and local chat works. File tools executed, but the
 - Server-reported inference peaks included 3.85 GiB for initial short model test and 5.41 GiB for first Hermes prompt. System figures include other applications and concurrent installation work; no causal attribution or long-context stability claim is made.
 - No observed OOM/process kill during short tests. Activity Monitor Memory Pressure and sustained long-context behavior still need operator evaluation.
 
-## Removal preview and final state
+## Phase 1 removal preview and final state
 
 `hermes uninstall --dry-run` succeeded and explicitly reported no changes. Preview covered gateway processes/services, Hermes PATH entries/wrappers, managed node/npm/npx links, desktop artifacts and the source checkout, while retaining `~/.hermes` config/data. Nothing was uninstalled.
 
@@ -93,10 +93,10 @@ Ollama is left running as a foreground POC session process on loopback; it is no
 ## Next checkpoints
 
 - Use local chat for the initial POC. Treat file edits as unverified until independently checked; exact-byte and path handling failed with this 4B model.
-- Observe sustained 64K context memory pressure before accepting G1 fully.
+- Long-input memory-pressure guard triggered; keep G1 long-input capacity BLOCKED until a deliberate backend/resource decision and successful retest.
 - Review upstream dependency fixes before broader exposure or production use.
 - Operator approved the local phase and manual Gemini stage. Key setup/catalog succeeded; successful Gemini inference needs a later explicit retest after vendor 503s clear. Keep fallback off.
-- Actual uninstall/reinstall remain separate, pending steps. Sanitized evidence publication is authorized.
+- Retained-data uninstall/reinstall completed successfully in Phase 3; clean-slate deletion/fresh-hardware rebuild remain untested. Sanitized evidence publication is authorized.
 
 
 ## Phase 2 — approved manual Gemini tests (2026-10-24)
@@ -133,3 +133,41 @@ Ollama is left running as a foreground POC session process on loopback; it is no
 ### Phase 2 result
 
 **SETUP COMPLETE; SUCCESSFUL CLOUD INFERENCE BLOCKED BY HTTP 503.** Native provider setup and attempted routing are observed. Gemini response correctness, successful token/cost attribution and Google dashboard corroboration are not proven. Local operation remains available. Do not enable fallback or claim full G3 PASS on this evidence. Retest the explicit synthetic Gemini call after the vendor becomes available; do not schedule or retry indefinitely. Raw diagnostic/credential artifacts stay outside this public repository.
+
+
+## Phase 3 — validation and retained-data reinstallation (2026-10-24)
+
+Full Traditional Chinese result table: [10-validation-reinstall-zh-TW.md](10-validation-reinstall-zh-TW.md).
+
+### Gemini diagnostic evidence
+
+- 20:49:40 +10:00: live catalog HTTP 200; one bounded Hermes gemini-3.8-flash retry failed with HTTP 503 after 25.225s, exit 1, config unchanged.
+- 20:50:52 +10:00: minimal native Google generateContent, 64-token output budget and synthetic prompt, returned HTTP 200 in 11.24s. Google usage: 8 prompt, 3 visible candidate, 57 thought, 68 total tokens; standard service tier. The exact-response predicate was false; no raw body is published. This establishes successful API execution for that minimal payload, not successful Hermes behavior.
+- A temporary `model.streaming: false` Hermes 3.8 test failed with ReadTimeout after 47.172s. Previous config restored byte-for-byte in finally.
+- A catalog-verified explicit gemini-3.1-flash-lite-preview test failed with streaming read timeout after 22.775s. Default provider never changed; no fallback enabled.
+- Since minimal native HTTP succeeded, a service-wide outage is not established. Payload/output budget/transport differ; root cause remains unproven. No vendor-code patch, alternate backend or billing-plan change was made. Google dashboard/actual costs remain unverified.
+
+### Long-input safety test
+
+- Kept num_ctx/context at 65536. Baseline pressure level 1, swap 1034.44 MiB, model not loaded. Synthetic filler only, no private data.
+- First target ~8K: actual prompt_eval_count 8169, response CONTEXT_OK, total 7.386s, prompt evaluation 5.173s, 2 generated tokens. GPU resident size 4325479952 bytes; context_length 65536. End pressure level 2 (warning), swap 1034.44 MiB.
+- Next 32K target request was initiated. At 12s monitor, pressure remained level 2 and swap 1379.19 MiB; guard stopped escalation and requested model unload. This stage has no completed prompt/token receipt. The 64K target was not attempted.
+- Subsequent pressure recovered to 1; later observed system-wide swap 2365.50 MiB. Final after all tests/model unload: pressure 1, swap 2181.44 MiB, `/api/ps` empty. Figures include other apps and in-flight work and do not isolate model-only memory. Full long-input G1 remains BLOCKED.
+
+### Constrained file tests
+
+- A single relative filename in the configured scratch cwd avoided the earlier malformed absolute-path correction. Create/read returned STEP3_FILE_OK in 11s; independent bytes exactly `b'STEP3_FILE_OK'`, 13 bytes.
+- Separate edit/read returned STEP3_EDIT_OK in 8s; independent bytes exactly `b'STEP3_EDIT_OK'`. Removed only this POC test file afterward.
+- Historical failures remain valid. Two constrained passes do not establish general 4B tool reliability.
+
+### Private backup and actual reinstall
+
+- Reviewed fresh `hermes uninstall --dry-run` and official default keep-data implementation; source git status clean. No named profiles or full-data removal requested.
+- Created full data backup (code/tools/caches excluded) with umask 077 and `--keep 0` so no older backups were deleted. ZIP: 2038695 bytes, 384 entries, mode 0600, CRC check passed. Confirmed config.yaml, .env, state.db and SOUL.md included; archive stays only under private local `~/.hermes/backups/`. Never publish this credential-containing archive.
+- 20:57:52 +10:00: `hermes uninstall --yes` default keep-data mode exit 0. Code checkout and wrapper actually removed; config and dotenv bytes unchanged, all 15 original session IDs retained, Ollama CLI symlink preserved and API remained available. No `--full`/`--data`, model removal, shared runtime deletion or global dependency removal.
+- Shallow clone of official v0.22.5 plus the inspected minimal installer (`--skip-setup --skip-browser --skip-computer-use`) both exit 0. Entire uninstall/reinstall duration 115.649s.
+- Reinstalled commit bf0203a794a07aac3ff764972ab9087baa4e4f4e, launcher restored, config/dotenv byte-identical, original sessions still present. Managed runtime reused; this is a same-host retained-data rebuild, not a fresh-machine result. Reapplied curator pause after installation.
+- `hermes --version` reports v0.22.5 / Python 3.14.9 / OpenAI SDK 2.24.0. Config check exit 0. REINSTALL_LOCAL_OK local chat exit 0, 6s, no tools; session metadata: custom, loopback Ollama, 4863 input / 4 output tokens, one API call.
+- Test gateway stopped; Ollama model unloaded from memory, API still running locally. Same lockfile means previous npm audit findings remain unresolved; no remediation claimed.
+
+**Phase 3 decision:** retained-data reproducibility PASS; constrained short file tasks PASS; full local-agent/long-input acceptance and Hermes Gemini acceptance remain LIMITED/BLOCKED. No automatic fallback configured.

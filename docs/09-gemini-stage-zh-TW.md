@@ -1,6 +1,8 @@
 # 第二階段：Gemini 手動呼叫（2026-10-24）
 
-**目前結果：設定完成；成功推論驗證受 Google HTTP 503 阻擋。**
+**第二階段結果：設定完成；Hermes 成功推論驗證受 HTTP 503 阻擋。**
+
+後續第三階段觀察到最小原生 API 請求 HTTP 200，但 Hermes 的串流／非串流呼叫仍失敗；不能單憑先前 503 判定整體 Google 服務中斷。最新證據見 [第三階段紀錄](10-validation-reinstall-zh-TW.md)。
 
 使用者已接受第一階段並授權推送、進入 Gemini 階段。已透過 Mac 本機隱藏輸入框儲存 Google AI Studio 金鑰；金鑰只留在 `~/.hermes/.env`（權限 0600）。GitHub 沒有金鑰或原始 session/log。
 

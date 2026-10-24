@@ -44,9 +44,11 @@ hermes chat --oneshot --reasoning none --max-turns 3 -q '請用繁體中文打�
 - 設定：`~/.hermes/config.yaml`；原始安裝設定備份：`~/.hermes/config.yaml.pre-local-poc`。
 - 本機工具只啟用 terminal / file。scratch cwd 是工作目錄設定，並非作業系統強制的檔案沙盒；請維持在無敏感資料的測試目錄使用。
 - Gemini 金鑰已於第二階段存入本機；兩個 Flash 模型的推論皆回傳 Google HTTP 503，詳見 [Gemini 階段紀錄](09-gemini-stage-zh-TW.md)。預設仍是本機，雲端 fallback 關閉；外部登入採用、輔助標題生成、壓縮、內建記憶、遙測與背景 skill curator 維持停用。
-- 64K context 的短提示測試成功，不代表已測試填滿 64K 的長對話。末次觀察 swap 約 1.2 GiB，尚需持續觀察。
+- 64K 設定的短提示可運作，但第三階段長輸入測試因 macOS 記憶體壓力警告而停止；完整 64K 輸入穩定性尚未通過。測試完成卸載模型後 pressure level 1、swap 約 2.13 GiB。
 - `hermes doctor` 發現 stable 版本的 npm 依賴漏洞，需追蹤上游 lockfile 修正；本次未修改供應商依賴。
 - 任何模型宣稱的檔案修改，都要在檔案系統另行核對；這次測試已出現誤報成功。
-- 本機階段已獲使用者接受並授權發佈實測文件、進入 Gemini 手動呼叫階段；上述測試限制仍保留。尚未執行實際解除安裝或重新安裝。
+- 本機階段已獲使用者接受並授權發佈實測文件、進入 Gemini 手動呼叫階段；上述測試限制仍保留。第三階段已完成保留資料的移除／重裝，詳見 [驗收紀錄](10-validation-reinstall-zh-TW.md)。
 
 完整實測、版本、失敗與資源數據見 [06-execution-log.md](06-execution-log.md)。
+
+第三階段另外通過單一相對檔名的建立／讀取／編輯測試，仍須人工核對修改。模型已從 RAM 卸載以釋放資源，下一次對話會重新載入；模型檔案仍保留。
