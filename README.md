@@ -2,7 +2,7 @@
 
 > POC 001 — Hermes Agent + Ollama + optional Gemini on **Golden Gate** (Mac mini M6 base, Apple Silicon, 16 GB unified memory, 256 GB SSD).
 
-**Status (2026-10-24): LIMITED PASS.** Hermes v0.22.5 + Ollama 0.40.10 + Qwen3.5 4B run locally on the inspected M6 / 16 GB Mac. Short local chat, constrained file operations, and retained-data uninstall/reinstall passed. Long-input testing stopped at macOS memory-pressure warnings; full 64K input stability is BLOCKED. Hermes Gemini calls still fail with 503/timeouts, although a minimal native Google request returned HTTP 200; root cause remains unresolved. npm audit findings remain. See [actual evidence](docs/06-execution-log.md), [local guide (繁體中文)](docs/08-local-start-zh-TW.md), and [third-stage validation/reinstallation results (繁體中文)](docs/10-validation-reinstall-zh-TW.md). The operator accepted the initial local phase and authorized publication and further deployment stages; historical failures remain recorded.
+**Status (2026-10-25): FULLY UNINSTALLED.** At the operator's explicit request, Hermes, Ollama, local models, settings, local credentials, sessions and private backups were removed from the Mac. Fresh-shell command checks, application/data/service-path scans and port 11434 verification passed; available disk increased by about 8.1 GiB. The documentation repository is retained. See [完整移除紀錄（繁體中文）](docs/13-full-removal-zh-TW.md). Earlier POC passes, failures and Phase 4 plans below are historical, not a current installed state.
 
 ## Objectives
 
@@ -63,7 +63,7 @@ Never commit API keys, auth files, private sessions, logs, personal documents or
 Installation interfaces and model catalogs evolve; recheck official docs and record the exact versions before executing.
 
 
-## Phase 4 — sandbox, web search and model tuning (STAGED, NOT DEPLOYED)
+## Phase 4 — sandbox, web search and model tuning (HISTORICAL PLAN, NOT DEPLOYED)
 
 Requested 2026-10-24. These are version-aware documents and operator-run scripts. They do NOT imply that Golden Gate settings, Ollama models or Docker were changed.
 

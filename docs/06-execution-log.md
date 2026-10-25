@@ -1,6 +1,6 @@
 # 06 — Actual deployment execution log
 
-**State: LOCAL PHASE LIMITED PASS — executed 2026-10-24, Australia/Brisbane.**
+**Current state: FULLY UNINSTALLED — 2026-10-25, Australia/Brisbane.** Hermes, Ollama and all app-specific local data were removed at the operator's explicit request. See [full-removal evidence](13-full-removal-zh-TW.md). The installation/test receipts below describe historical states.
 
 Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Hermes Gemini inference remains unresolved (503/timeouts despite a minimal native HTTP 200). Long-input testing stopped at memory-pressure warnings. Retained-data uninstall/reinstall has now passed; upstream dependency remediation remains unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
 
@@ -171,3 +171,10 @@ Full Traditional Chinese result table: [10-validation-reinstall-zh-TW.md](10-val
 - Test gateway stopped; Ollama model unloaded from memory, API still running locally. Same lockfile means previous npm audit findings remain unresolved; no remediation claimed.
 
 **Phase 3 decision:** retained-data reproducibility PASS; constrained short file tasks PASS; full local-agent/long-input acceptance and Hermes Gemini acceptance remain LIMITED/BLOCKED. No automatic fallback configured.
+
+
+## Full removal — 2026-10-25
+
+Operator explicitly requested complete removal of Hermes and Ollama. Reviewed full dry-run, then official `hermes uninstall --full --yes` exited 0. Code, wrappers, managed Hermes runtimes, config/credentials, sessions, logs/private backups, desktop data and preferences removed. Stopped Ollama App/updater and deleted App, all `~/.ollama` models/config, desktop support/cache/preferences and user CLI link. A root-owned system CLI symlink required and received native macOS administrator authorization for that single path; no password captured. Empty POC scratch folder removed. Shared Git/Xcode/Homebrew and general shared runtime caches preserved.
+
+Final fresh-shell commands absent, no app-specific paths/services/processes found, and loopback port 11434 closed. Available space observed increasing by about 8.1 GiB. Documentation kept; no reinstall. Local key deletion does not revoke the key in the Google account. Detailed sanitized receipt: [13-full-removal-zh-TW.md](13-full-removal-zh-TW.md).
