@@ -1,5 +1,7 @@
 # 04 — POC test matrix and acceptance evidence
 
+**Latest execution:** [2026-10-25 manually reinstalled native-backend validation + health check](14-validation-healthcheck-20261025-zh-TW.md). The original matrix below is unchanged; backend differences, user-skipped T13/T14, and failed/blocked cases are recorded explicitly.
+
 **Rule:** A documented command is not evidence of execution. Mark each case PENDING / PASS / FAIL / BLOCKED, with sanitized artifacts. Never paste full Hermes config, API keys, auth/session database or sensitive messages.
 
 | ID | What to test | How | Pass condition |

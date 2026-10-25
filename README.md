@@ -2,7 +2,7 @@
 
 > POC 001 — Hermes Agent + Ollama + optional Gemini on **Golden Gate** (Mac mini M6 base, Apple Silicon, 16 GB unified memory, 256 GB SSD).
 
-**Status (2026-10-25): FULLY UNINSTALLED.** At the operator's explicit request, Hermes, Ollama, local models, settings, local credentials, sessions and private backups were removed from the Mac. Fresh-shell command checks, application/data/service-path scans and port 11434 verification passed; available disk increased by about 8.1 GiB. The documentation repository is retained. See [完整移除紀錄（繁體中文）](docs/13-full-removal-zh-TW.md). Earlier POC passes, failures and Phase 4 plans below are historical, not a current installed state.
+**Status (2026-10-25): USER-REINSTALLED; VALIDATION NOT PASSED.** Following the earlier complete removal, the operator independently installed Hermes Desktop with native llama.cpp and tested Telegram. The latest run reuses all T00–T15 criteria, preserves Ollama-specific blockers, skips T13/T14 at the operator's instruction, and attempts T11 once in an isolated profile. See [16-case results and health check（繁體中文）](docs/14-validation-healthcheck-20261025-zh-TW.md) and [sanitized evidence](evidence/public/validation-2026-10-25-native.json). No production configuration/credential changes or application reinstall were made by this validation run; earlier removal and deployment receipts are historical.
 
 ## Objectives
 

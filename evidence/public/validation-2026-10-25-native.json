@@ -1,0 +1,208 @@
+{
+  "run_label": "2026-10-25-current-native-install",
+  "reference_matrix": "docs/04-validation.md",
+  "started_utc": "2026-10-25T13:34:18.226263+00:00",
+  "completed_utc": "2026-10-25T13:40:37.249080+00:00",
+  "timezone": "Australia/Brisbane",
+  "scope": "Current manually reinstalled native llama.cpp topology; original Ollama case criteria retained; T13/T14 explicitly skipped; one T11 attempt approved.",
+  "healthcheck": {
+    "installation": "Hermes Desktop / source CLI v0.22.5 bf0203a794a0; managed llama.cpp, no Ollama",
+    "global_default_model": "gemini-3.8-flash",
+    "local_model": "Qwen3.8-9B-Q6_K",
+    "local_model_size_gib": 7.04,
+    "served_context_tokens": 98304,
+    "other_gguf": "Qwen3.8-14B-Instruct-Turbo.Q4_K_M.gguf (8.529 GiB on disk; not proof loaded)",
+    "llama32_mistral_visibility": "Not found in inspected Hermes model directory or session model metadata; external/deleted models not ruled out.",
+    "telegram": {
+      "token_read_probe_valid": true,
+      "approved_pairing_records": 1,
+      "allow_all_users": false,
+      "webhook_configured": false,
+      "pending_updates_at_healthcheck": 0,
+      "recent_session_model": "gemini-3.8-flash"
+    },
+    "secret_file_mode": "0600",
+    "terminal_backend": "local",
+    "telegram_toolset": "hermes-telegram",
+    "agent_max_turns": 500,
+    "max_concurrent_sessions": null,
+    "auth_adopt_external_logins": true,
+    "fallback_entries_in_production": 0,
+    "two_desktop_app_locations": true,
+    "doctor_optional_tool_keys_missing": true,
+    "doctor_npm_audit_findings": true,
+    "healthcheck_was_read_only": true
+  },
+  "cases": {
+    "T00": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 0.022,
+      "architecture": "arm64",
+      "ram_gib": 16,
+      "os": "macOS 27.0.1 (26A434)",
+      "memory_before": {
+        "pressure_level": 1,
+        "swap_used_mib": 1676.25
+      }
+    },
+    "T01": {
+      "status": "PASS",
+      "exit_code": 0,
+      "duration_seconds": 0.022
+    },
+    "T02": {
+      "status": "BLOCKED",
+      "exit_code": 1,
+      "duration_seconds": 0.019,
+      "reason": "Original Ollama CLI/API acceptance not applicable to this manually installed llama.cpp topology; Ollama intentionally absent."
+    },
+    "T03": {
+      "status": "BLOCKED",
+      "reason": "Original qwen3.5-4b-64k Ollama tag not installed; current local models documented separately.",
+      "current_models": [
+        {
+          "file": "Qwen3.8-14B-Instruct-Turbo.Q4_K_M.gguf",
+          "size_gib": 8.529
+        },
+        {
+          "file": "Qwen3.8-9B-Q6_K.gguf",
+          "size_gib": 7.04
+        }
+      ],
+      "served_context_tokens": 98304
+    },
+    "T04": {
+      "status": "BLOCKED",
+      "reason": "Original Ollama run/ps criterion cannot execute. Native llama.cpp short-prompt evidence is an adaptation, not original PASS.",
+      "native_short_prompt_pass": false,
+      "memory_before": {
+        "pressure_level": 1,
+        "swap_used_mib": 1676.25
+      },
+      "memory_after": {
+        "pressure_level": 2,
+        "swap_used_mib": 3250.81
+      },
+      "long_window_stress_performed": false
+    },
+    "T05": {
+      "status": "FAIL",
+      "help_exit": 0,
+      "config_exit": 0,
+      "doctor_exit": 1,
+      "reason": "Known optional tool-key gaps and npm audit findings prevent all checks passing.",
+      "doctor_duration_seconds": 6.029
+    },
+    "T06": {
+      "status": "FAIL",
+      "exit_code": 130,
+      "duration_seconds": 13.627,
+      "response_matches": false,
+      "route": {
+        "model": "Qwen3.8-9B-Q6_K",
+        "billing_provider": null,
+        "billing_base_url": null,
+        "api_call_count": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": null,
+        "actual_cost_usd": null
+      },
+      "memory_after": {
+        "pressure_level": 2,
+        "swap_used_mib": 3250.81
+      }
+    },
+    "T07": {
+      "status": "FAIL",
+      "exit_code": 124,
+      "duration_seconds": 91.689,
+      "independent_bytes_match": false,
+      "testfile_removed": true,
+      "route": {}
+    },
+    "T08": {
+      "status": "FAIL",
+      "reason": "Real default is Gemini, with recent Telegram Gemini sessions and recorded cloud usage. Isolated local tests remain local, but routine real-profile local-only acceptance is not satisfied; Google usage dashboard not audited.",
+      "isolated_local_route": {
+        "model": "Qwen3.8-9B-Q6_K",
+        "billing_provider": null,
+        "billing_base_url": null,
+        "api_call_count": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost_usd": null,
+        "actual_cost_usd": null
+      }
+    },
+    "T09": {
+      "status": "FAIL",
+      "exit_code": 124,
+      "duration_seconds": 76.696,
+      "response_matches": false,
+      "route": {},
+      "google_dashboard_corroborated": false
+    },
+    "T10": {
+      "status": "PASS",
+      "exit_code": 1,
+      "duration_seconds": 0.671,
+      "cli_clear_key_error": true,
+      "backend_missing_key_error": false,
+      "production_credentials_untouched": true,
+      "evidence": "CLI explicitly reports no usable Gemini credentials and names GOOGLE_API_KEY/GEMINI_API_KEY; no alternative provider reply."
+    },
+    "T11": {
+      "status": "FAIL",
+      "exit_code": 124,
+      "duration_seconds": 91.685,
+      "response_matches": false,
+      "fallback_switch_observed": false,
+      "route": {},
+      "real_local_service_stopped": false
+    },
+    "T12": {
+      "status": "BLOCKED",
+      "reason": "Ollama is not installed; production llama.cpp was not restarted. Additional native load skipped after pressure warning.",
+      "native_recovery_executed": false
+    },
+    "T13": {
+      "status": "SKIPPED",
+      "reason": "User explicitly instructed not to test actual uninstall; reviewed dry-run and private backup only."
+    },
+    "T14": {
+      "status": "SKIPPED",
+      "reason": "User explicitly instructed not to test reinstallation."
+    },
+    "T15": {
+      "status": "PASS",
+      "reason": "Staged whitelist, whitespace, actual stored credential comparison, token/private-path/session-ID patterns reviewed; raw data excluded."
+    }
+  },
+  "isolation": {
+    "standalone_validation_profile": true,
+    "telegram_credentials_not_copied": true,
+    "temporary_profile_removed": true,
+    "production_files_match_backup": {
+      "config.yaml": true,
+      ".env": true
+    },
+    "production_gateway_alive": true,
+    "fallback_restored_off": true
+  },
+  "limitations": [
+    "No Google usage/billing dashboard corroboration",
+    "No packet capture proving zero cloud traffic",
+    "No full-window 96K stress test",
+    "Local interrupt/timeout cause not established; pressure warning contemporaneous",
+    "No uninstall/reinstall in this run; explicitly skipped by user",
+    "Timed-out cases use harness exit 124; not a provider HTTP error code"
+  ],
+  "summary_counts": {
+    "PASS": 4,
+    "BLOCKED": 4,
+    "FAIL": 6,
+    "SKIPPED": 2
+  }
+}

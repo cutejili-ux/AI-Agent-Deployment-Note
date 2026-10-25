@@ -1,6 +1,6 @@
 # 06 — Actual deployment execution log
 
-**Current state: FULLY UNINSTALLED — 2026-10-25, Australia/Brisbane.** Hermes, Ollama and all app-specific local data were removed at the operator's explicit request. See [full-removal evidence](13-full-removal-zh-TW.md). The installation/test receipts below describe historical states.
+**Current state: USER-REINSTALLED; latest T00–T15 validation incomplete/failed — 2026-10-25, Australia/Brisbane.** The operator independently reinstalled Hermes Desktop / native llama.cpp after the historical full removal. Latest [16-case report + health check](14-validation-healthcheck-20261025-zh-TW.md) records this new installation; no historical PASS is reused for this run.
 
 Hermes + Ollama are installed and local chat works. File tools executed, but the 4B model failed exact-format and correction tests. Full POC acceptance is not achieved: Hermes Gemini inference remains unresolved (503/timeouts despite a minimal native HTTP 200). Long-input testing stopped at memory-pressure warnings. Retained-data uninstall/reinstall has now passed; upstream dependency remediation remains unresolved. The operator accepted the local phase with these recorded limitations and authorized GitHub publication and the next manual Gemini stage. This acceptance does not change the measured test results.
 
@@ -178,3 +178,12 @@ Full Traditional Chinese result table: [10-validation-reinstall-zh-TW.md](10-val
 Operator explicitly requested complete removal of Hermes and Ollama. Reviewed full dry-run, then official `hermes uninstall --full --yes` exited 0. Code, wrappers, managed Hermes runtimes, config/credentials, sessions, logs/private backups, desktop data and preferences removed. Stopped Ollama App/updater and deleted App, all `~/.ollama` models/config, desktop support/cache/preferences and user CLI link. A root-owned system CLI symlink required and received native macOS administrator authorization for that single path; no password captured. Empty POC scratch folder removed. Shared Git/Xcode/Homebrew and general shared runtime caches preserved.
 
 Final fresh-shell commands absent, no app-specific paths/services/processes found, and loopback port 11434 closed. Available space observed increasing by about 8.1 GiB. Documentation kept; no reinstall. Local key deletion does not revoke the key in the Google account. Detailed sanitized receipt: [13-full-removal-zh-TW.md](13-full-removal-zh-TW.md).
+
+
+## User-reinstalled native stack — 16-case run and health check (2026-10-25)
+
+User requested executing the original T00–T15 matrix and publishing the result plus the health check. Later explicitly skipped T13/T14 and approved one controlled T11 fallback attempt. Current native llama.cpp topology has no Ollama, so original Ollama prerequisites remain BLOCKED rather than being silently replaced or reinstalled. New isolated profile had no Telegram credentials; original config and dotenv match the pre-suite private backup byte-for-byte, production gateway remains alive, and the temporary profile/credentials were removed after fallback restoration. No production setting fixes, app reinstall, Google billing change or bot messages.
+
+Detailed statuses, durations, exit-code distinctions, health findings, test-harness corrections, limitations and sanitized machine-readable data: [16-case report](14-validation-healthcheck-20261025-zh-TW.md), [JSON](../evidence/public/validation-2026-10-25-native.json). Raw logs/configs/backup/session IDs stay local. T15 publication review is completed before commit; no all-tests-passed claim.
+
+Final latest-run counts: **4 PASS / 6 FAIL / 4 BLOCKED / 2 SKIPPED**. T15 staged privacy review passed. T13/T14 skipped by user. These results do not grant overall POC acceptance.
